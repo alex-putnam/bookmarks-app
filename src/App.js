@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import AddBookmark from './AddBookmark/AddBookmark';
 import BookmarkList from './BookmarkList/BookmarkList';
 import Nav from './Nav/Nav';
@@ -31,65 +32,65 @@ const bookmarks = [
 
 class App extends Component {
   state = {
-    page: 'list',
     bookmarks,
     error: null,
   };
 
-  changePage = (page) => {
-    this.setState({ page })
-  }
-
-  setBookmarks = bookmarks => {
+  setBookmarks = (bookmarks) => {
     this.setState({
       bookmarks,
       error: null,
-      page: 'list',
-    })
-  }
+    });
+  };
 
-  addBookmark = bookmark => {
+  addBookmark = (bookmark) => {
     this.setState({
-      bookmarks: [ ...this.state.bookmarks, bookmark ],
-    })
-  }
+      bookmarks: [...this.state.bookmarks, bookmark],
+    });
+  };
 
   componentDidMount() {
     fetch(config.API_ENDPOINT, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
-        'Authorization': `Bearer ${config.API_KEY}`
-      }
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
-          throw new Error(res.status)
+          throw new Error(res.status);
         }
-        return res.json()
+        return res.json();
       })
       .then(this.setBookmarks)
-      .catch(error => this.setState({ error }))
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
-    const { page, bookmarks } = this.state
+    const { bookmarks } = this.state;
     return (
       <main className='App'>
         <h1>Bookmarks!</h1>
-        <Nav clickPage={this.changePage} />
+        <Nav />
         <div className='content' aria-live='polite'>
-          {page === 'add' && (
-            <AddBookmark
-              onAddBookmark={this.addBookmark}
-              onClickCancel={() => this.changePage('list')}
-            />
-          )}
-          {page === 'list' && (
-            <BookmarkList
-              bookmarks={bookmarks}
-            />
-          )}
+          <Route
+            path='/add-bookmark'
+            render={({ history }) => {
+              console.log(history);
+              return (
+                <AddBookmark
+                  onAddBookmark={this.addBookmark}
+                  onClickCancel={() => history.push('/')}
+                />
+              );
+            }}
+          />
+          <Route
+            exact
+            path='/'
+            render={() => <BookmarkList bookmarks={bookmarks} />}
+          />
         </div>
       </main>
     );
