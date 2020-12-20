@@ -1,27 +1,16 @@
-<<<<<<< HEAD
-import React, { Component } from  'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BookmarksContext from '../BookmarksContext';
-import config from '../config'
-=======
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import config from '../config';
->>>>>>> master
 import './AddBookmark.css';
 
 const Required = () => <span className='AddBookmark__required'>*</span>;
 
 class AddBookmark extends Component {
-<<<<<<< HEAD
   static propTypes = {
     history: PropTypes.shape({
       push: PropTypes.func,
     }).isRequired,
-=======
-  static defaultProps = {
-    onAddBookmark: () => {},
->>>>>>> master
   };
 
   static contextType = BookmarksContext;
@@ -38,15 +27,9 @@ class AddBookmark extends Component {
       title: title.value,
       url: url.value,
       description: description.value,
-<<<<<<< HEAD
       rating: Number(rating.value),
-    }
-    this.setState({ error: null })
-=======
-      rating: rating.value,
     };
     this.setState({ error: null });
->>>>>>> master
     fetch(config.API_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify(bookmark),
@@ -57,58 +40,30 @@ class AddBookmark extends Component {
     })
       .then((res) => {
         if (!res.ok) {
-<<<<<<< HEAD
-          return res.json().then(error => Promise.reject(error))
-=======
-          // get the error message from the response,
-          return res.json().then((error) => {
-            // then throw it
-            throw error;
-          });
->>>>>>> master
+          return res.json().then((error) => Promise.reject(error));
         }
         return res.json();
       })
-<<<<<<< HEAD
-      .then(data => {
-        title.value = ''
-        url.value = ''
-        description.value = ''
-        rating.value = ''
-        this.context.addBookmark(data)
-        this.props.history.push('/')
-      })
-      .catch(error => {
-        console.error(error)
-        this.setState({ error })
-      })
-  }
-=======
       .then((data) => {
         title.value = '';
         url.value = '';
         description.value = '';
         rating.value = '';
+        this.context.addBookmark(data);
         this.props.history.push('/');
-        this.props.onAddBookmark(data);
       })
       .catch((error) => {
+        console.error(error);
         this.setState({ error });
       });
   };
->>>>>>> master
 
   handleClickCancel = () => {
-    this.props.history.push('/')
+    this.props.history.push('/');
   };
 
   render() {
-<<<<<<< HEAD
-    const { error } = this.state
-=======
     const { error } = this.state;
-    const { onClickCancel } = this.props;
->>>>>>> master
     return (
       <section className='AddBookmark'>
         <h2>Create a bookmark</h2>
@@ -170,4 +125,4 @@ class AddBookmark extends Component {
   }
 }
 
-export default withRouter(AddBookmark);
+export default AddBookmark;

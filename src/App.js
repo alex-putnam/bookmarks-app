@@ -10,7 +10,6 @@ import './App.css';
 
 class App extends Component {
   state = {
-<<<<<<< HEAD
     bookmarks: [],
     error: null,
   };
@@ -21,18 +20,6 @@ class App extends Component {
       error: null,
     })
   }
-=======
-    bookmarks,
-    error: null,
-  };
-
-  setBookmarks = (bookmarks) => {
-    this.setState({
-      bookmarks,
-      error: null,
-    });
-  };
->>>>>>> master
 
   addBookmark = (bookmark) => {
     this.setState({
@@ -59,16 +46,11 @@ class App extends Component {
     })
       .then((res) => {
         if (!res.ok) {
-<<<<<<< HEAD
           return res.json().then(error => Promise.reject(error))
-=======
-          throw new Error(res.status);
->>>>>>> master
         }
         return res.json();
       })
       .then(this.setBookmarks)
-<<<<<<< HEAD
       .catch(error => {
         console.error(error)
         this.setState({ error })
@@ -111,36 +93,6 @@ class App extends Component {
             />
           </div>
         </BookmarksContext.Provider>
-=======
-      .catch((error) => this.setState({ error }));
-  }
-
-  render() {
-    const { bookmarks } = this.state;
-    return (
-      <main className='App'>
-        <h1>Bookmarks!</h1>
-        <Nav />
-        <div className='content' aria-live='polite'>
-          <Route
-            path='/add-bookmark'
-            render={({ history }) => {
-              console.log(history);
-              return (
-                <AddBookmark
-                  onAddBookmark={this.addBookmark}
-                  onClickCancel={() => history.push('/')}
-                />
-              );
-            }}
-          />
-          <Route
-            exact
-            path='/'
-            render={() => <BookmarkList bookmarks={bookmarks} />}
-          />
-        </div>
->>>>>>> master
       </main>
     );
   }
