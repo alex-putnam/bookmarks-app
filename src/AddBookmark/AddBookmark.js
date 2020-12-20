@@ -1,18 +1,27 @@
+<<<<<<< HEAD
 import React, { Component } from  'react';
 import PropTypes from 'prop-types';
 import BookmarksContext from '../BookmarksContext';
 import config from '../config'
+=======
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import config from '../config';
+>>>>>>> master
 import './AddBookmark.css';
 
-const Required = () => (
-  <span className='AddBookmark__required'>*</span>
-)
+const Required = () => <span className='AddBookmark__required'>*</span>;
 
 class AddBookmark extends Component {
+<<<<<<< HEAD
   static propTypes = {
     history: PropTypes.shape({
       push: PropTypes.func,
     }).isRequired,
+=======
+  static defaultProps = {
+    onAddBookmark: () => {},
+>>>>>>> master
   };
 
   static contextType = BookmarksContext;
@@ -21,31 +30,46 @@ class AddBookmark extends Component {
     error: null,
   };
 
-  handleSubmit = e => {
-    e.preventDefault()
+  handleSubmit = (e) => {
+    e.preventDefault();
     // get the form fields from the event
-    const { title, url, description, rating } = e.target
+    const { title, url, description, rating } = e.target;
     const bookmark = {
       title: title.value,
       url: url.value,
       description: description.value,
+<<<<<<< HEAD
       rating: Number(rating.value),
     }
     this.setState({ error: null })
+=======
+      rating: rating.value,
+    };
+    this.setState({ error: null });
+>>>>>>> master
     fetch(config.API_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify(bookmark),
       headers: {
         'content-type': 'application/json',
-        'authorization': `bearer ${config.API_KEY}`
-      }
+        authorization: `bearer ${config.API_KEY}`,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
+<<<<<<< HEAD
           return res.json().then(error => Promise.reject(error))
+=======
+          // get the error message from the response,
+          return res.json().then((error) => {
+            // then throw it
+            throw error;
+          });
+>>>>>>> master
         }
-        return res.json()
+        return res.json();
       })
+<<<<<<< HEAD
       .then(data => {
         title.value = ''
         url.value = ''
@@ -59,28 +83,42 @@ class AddBookmark extends Component {
         this.setState({ error })
       })
   }
+=======
+      .then((data) => {
+        title.value = '';
+        url.value = '';
+        description.value = '';
+        rating.value = '';
+        this.props.history.push('/');
+        this.props.onAddBookmark(data);
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+  };
+>>>>>>> master
 
   handleClickCancel = () => {
     this.props.history.push('/')
   };
 
   render() {
+<<<<<<< HEAD
     const { error } = this.state
+=======
+    const { error } = this.state;
+    const { onClickCancel } = this.props;
+>>>>>>> master
     return (
       <section className='AddBookmark'>
         <h2>Create a bookmark</h2>
-        <form
-          className='AddBookmark__form'
-          onSubmit={this.handleSubmit}
-        >
+        <form className='AddBookmark__form' onSubmit={this.handleSubmit}>
           <div className='AddBookmark__error' role='alert'>
             {error && <p>{error.message}</p>}
           </div>
           <div>
             <label htmlFor='title'>
-              Title
-              {' '}
-              <Required />
+              Title <Required />
             </label>
             <input
               type='text'
@@ -92,9 +130,7 @@ class AddBookmark extends Component {
           </div>
           <div>
             <label htmlFor='url'>
-              URL
-              {' '}
-              <Required />
+              URL <Required />
             </label>
             <input
               type='url'
@@ -105,19 +141,12 @@ class AddBookmark extends Component {
             />
           </div>
           <div>
-            <label htmlFor='description'>
-              Description
-            </label>
-            <textarea
-              name='description'
-              id='description'
-            />
+            <label htmlFor='description'>Description</label>
+            <textarea name='description' id='description' />
           </div>
           <div>
             <label htmlFor='rating'>
-              Rating
-              {' '}
-              <Required />
+              Rating <Required />
             </label>
             <input
               type='number'
@@ -132,11 +161,8 @@ class AddBookmark extends Component {
           <div className='AddBookmark__buttons'>
             <button type='button' onClick={this.handleClickCancel}>
               Cancel
-            </button>
-            {' '}
-            <button type='submit'>
-              Save
-            </button>
+            </button>{' '}
+            <button type='submit'>Save</button>
           </div>
         </form>
       </section>
@@ -144,4 +170,4 @@ class AddBookmark extends Component {
   }
 }
 
-export default AddBookmark;
+export default withRouter(AddBookmark);
